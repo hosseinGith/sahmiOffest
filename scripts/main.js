@@ -9,32 +9,34 @@ let questionIndex = 0;
 let anserOffests = [];
 let questions;
 let answers;
+let trueAnswer = false;
 let xOffsets = {
-  xAfermative: x.slice(0, x.length / 2),
-  xMinus: x.slice((x.length + 1) / 2),
+  xAfermative: x.slice((x.length + 1) / 2),
+  xMinus: x.slice(0, x.length / 2),
   centerXs: x[(x.length - 1) / 2],
 };
 let yOffsets = {
-  yAfermative: y.slice((y.length + 1) / 2),
-  yMinus: y.slice(0, y.length / 2),
+  yAfermative: y.slice(0, y.length / 2),
+  yMinus: y.slice((y.length + 1) / 2),
   centerYs: y[(y.length - 1) / 2],
 };
 
 const setXYValues = async () => {
   answers = await (await fetch("./scripts/aswers.json")).json();
+  console.log(yOffsets.yAfermative);
   xOffsets.xAfermative.forEach((item, index) => {
-    item.id = xOffsets.xAfermative.length - index;
+    item.id = index + 1;
   });
   xOffsets.xMinus.forEach((item, index) => {
-    item.id = -(index + 1);
+    item.id = -(xOffsets.xMinus.length - index);
   });
   xOffsets.centerXs.id = 0;
 
   yOffsets.yAfermative.forEach((item, index) => {
-    item.id = index + 1;
+    item.id = yOffsets.yMinus.length - index;
   });
   yOffsets.yMinus.forEach((item, index) => {
-    item.id = -(yOffsets.yMinus.length - index);
+    item.id = -(index + 1);
   });
   yOffsets.centerYs.id = 0;
 };
@@ -45,10 +47,10 @@ const setClassActive = (xVal, yVal) => {
       y[index].classList.remove("active");
     });
   x.forEach((item, index) => {
-    if (item.id == xVal) {
+    if (item.id == Math.round(Number(xVal))) {
       item.classList.add("active");
     }
-    if (y[index].id == yVal) {
+    if (y[index].id == Math.round(Number(yVal))) {
       y[index].classList.add("active");
     }
   });
@@ -65,24 +67,6 @@ document.body.addEventListener("dblclick", (e) => {
 
 xyInputs.children[0].addEventListener("submit", (e) => {
   e.preventDefault();
-  let indexTrue = 0;
-  if (anserOffests.length === 2) {
-    anserOffests.forEach((item, index) => {
-      console.log(item === answers[questionIndex][index]);
-      if (item === answers[questionIndex][index]) indexTrue++;
-    });
-    console.log(indexTrue);
-    anserOffests = [];
-    if (indexTrue === answers[questionIndex].length) {
-      questionIndex++;
-      return setUestionValue(questionIndex);
-    }
-  }
-
-  setClassActive(
-    xyInputs.children[0].children[0].children[0].value,
-    xyInputs.children[0].children[1].children[0].value
-  );
   if (
     xyInputs.children[0].children[0].children[0].value &&
     xyInputs.children[0].children[1].children[0].value
@@ -90,12 +74,31 @@ xyInputs.children[0].addEventListener("submit", (e) => {
     anserOffests.push(
       `${xyInputs.children[0].children[0].children[0].value},${xyInputs.children[0].children[1].children[0].value}`
     );
+  else anserOffests = [];
+  if (anserOffests.toString() == answers[questionIndex].toString()) {
+    trueAnswer = true;
+    anserOffests = [];
+    questionIndex++;
+    setUestionValue(questionIndex);
+  }
+  setClassActive(
+    xyInputs.children[0].children[0].children[0].value,
+    xyInputs.children[0].children[1].children[0].value
+  );
 
   xyInputs.children[0].children[0].children[0].value = "";
   xyInputs.children[0].children[1].children[0].value = "";
   xyInputs.classList.remove("active");
+  if (trueAnswer) {
+    trueAnswer = false;
+    setTimeout(() => {
+      setClassActive();
+    }, 1000);
+  }
   console.log(anserOffests);
 });
+
+parseFloat();
 const setUestionValue = async (index) => {
   questions = await (await fetch("./scripts/sahmiQuestions.json")).json();
   xInputCont.children[0].innerHTML = questions[index];

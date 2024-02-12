@@ -1,6 +1,6 @@
 [
-  " <div id='xInput'>  <p style='position: relative'>    y =    <span> ½x<sub style='top: 0; position: absolute'>2 </sub> </span>    <span>- 3x + 2</span>  </p></div>:حل کنید",
   "<div id='xInput'>  <p style='position: relative'>    y =    <span>      -(x+1)<sub style='top: 0; position: absolute'> 2 </sub>    </span>    <span> - 3</span>  </p></div>:حل کنید",
+  " <div id='xInput'>  <p style='position: relative'>    y =    <span> ½x<sub style='top: 0; position: absolute'>2 </sub> </span>    <span>- 3x + 2</span>  </p></div>:حل کنید",
   "<div id='xInput'>  <p style='position: relative'>    y =    <span>x (x + 1)<sub style='top: 0; position: absolute'> 2 </sub></span> <span>-2</span>  </p></div>:حل کنید",
   "<div id='xInput'>  <p style='position: relative'>    y =    <span>x -2x<sub style='top: 0; position: absolute'> 2 </sub></span> <span>+1</span>  </p></div>:حل کنید"
 ]
